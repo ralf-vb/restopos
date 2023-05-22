@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class Product {
   String name;
-  String imagePath;
+  File imagePath;
   double price;
   String description;
 
@@ -29,13 +30,13 @@ class _pospageState extends State<pospage> {
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  XFile? _image;
+  File? _image;
 
   void addProduct() {
     setState(() {
       final newProduct = Product(
         name: nameController.text,
-        imagePath: _image?.path ?? '',
+        imagePath: _image!,
         price: double.parse(priceController.text),
         description: descriptionController.text,
       );
@@ -51,7 +52,9 @@ class _pospageState extends State<pospage> {
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = pickedFile;
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
     });
   }
 
@@ -73,7 +76,7 @@ class _pospageState extends State<pospage> {
           return ListTile(
             leading: _image != null
                 ? Image.file(
-              _image!.path,
+              _image!,
               width: 50.0,
               height: 50.0,
             )
@@ -126,7 +129,7 @@ class _pospageState extends State<pospage> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              products[index].imagePath = _image?.path ?? '';
+                              products[index].imagePath = _image!;
                               products[index].price =
                                   double.parse(priceController.text);
                               products[index].description =
