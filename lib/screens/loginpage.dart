@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:restopos/screens/dashboard.dart';
-import '../screens/registrationpage.dart';
-import '../screens/forgotpassword.dart';
-
-
+import 'package:restopos/screens/admin/admindashboard.dart';
+import 'package:restopos/screens/cashier/cashierdashboard.dart';
+import 'package:restopos/screens/manager/managerdashboard.dart';
+import 'package:restopos/screens/registrationpage.dart';
+import 'package:restopos/screens/forgotpassword.dart';
 
 class loginpage extends StatefulWidget {
   const loginpage({Key? key}) : super(key: key);
@@ -55,9 +55,6 @@ class _loginpageState extends State<loginpage> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
                       }
-                      if (!isValidEmail(value)) {
-                        return 'Please enter a valid email';
-                      }
                       return null;
                     },
                     onSaved: (value) {
@@ -95,16 +92,48 @@ class _loginpageState extends State<loginpage> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         // Perform login logic here using _email and _password
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => dashboard()),
-                        );
+                        if (_email == 'superadmin@gmail.com' && _password == 'superadmin') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => admindashboard()),
+                          );
+                        } else if (_email == 'manager@gmail.com' && _password == 'manager') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => managerdashboard()),
+                          );
+                        } else if (_email == 'cashier@gmail.com' && _password == 'cashier') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => cashierdashboard()),
+                          );
+                        } else {
+                          // Handle invalid credentials
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+
+
+                                title: Text('Invalid Credentials'),
+                                content: Text('Please enter valid credentials.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(Colors.blue[300]!), // Change the color here
                       minimumSize: MaterialStateProperty.all<Size>(Size(250, 50)), // Adjust the width and height as needed
-
                     ),
                     child: const Text('Login'),
                   ),
@@ -130,7 +159,6 @@ class _loginpageState extends State<loginpage> {
                         ),
                         child: const Text('Register >'),
                       ),
-
                     ],
                   ),
                   GestureDetector(
@@ -150,7 +178,6 @@ class _loginpageState extends State<loginpage> {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -158,13 +185,5 @@ class _loginpageState extends State<loginpage> {
         ),
       ),
     );
-  }
-
-  bool isValidEmail(String email) {
-    // Perform your email validation here
-    // You can use regular expressions or any other method
-    // to validate the email format
-    // For simplicity, this example checks if the email contains '@' symbol
-    return email.contains('@');
   }
 }
