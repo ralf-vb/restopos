@@ -42,7 +42,7 @@ class _forgotpasswordState extends State<forgotpassword> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 100.0),
+                      const SizedBox(height: 50.0),
                       Image.asset(
                         'assets/images/logo.png', // Replace with your image path
                         width: 200,
