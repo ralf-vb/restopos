@@ -4,7 +4,7 @@ import 'dart:io';
 
 class Product {
   String name;
-  File imagePath;
+  String imagePath;
   double price;
   String description;
 
@@ -30,13 +30,13 @@ class _pospageState extends State<pospage> {
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  File? _image;
+  XFile? _image;
 
   void addProduct() {
     setState(() {
       final newProduct = Product(
         name: nameController.text,
-        imagePath: _image!,
+        imagePath: _image?.path ?? '',
         price: double.parse(priceController.text),
         description: descriptionController.text,
       );
@@ -52,9 +52,7 @@ class _pospageState extends State<pospage> {
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
+      _image = pickedFile != null ? XFile(pickedFile.path) : null;
     });
   }
 
@@ -73,77 +71,94 @@ class _pospageState extends State<pospage> {
       body: ListView.builder(
         itemCount: products.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: _image != null
-                ? Image.file(
-              _image!,
-              width: 50.0,
-              height: 50.0,
-            )
-                : null,
-            title: Text(products[index].name),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Price: \$${products[index].price.toStringAsFixed(2)}'),
-                Text('Description: ${products[index].description}'),
-              ],
+          return Dismissible(
+            key: Key(products[index].name), // Unique key for each item
+            onDismissed: (direction) {
+              setState(() {
+                products.removeAt(index);
+              });
+            },
+            background: Container(
+              color: Colors.red,
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(right: 20.0),
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Edit Product'),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
+            child: ListTile(
+              leading: _image != null
+                  ? Image.file(
+                File(_image!.path),
+                width: 50.0,
+                height: 50.0,
+              )
+                  : null,
+              title: Text(products[index].name),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Price: \$${products[index].price.toStringAsFixed(2)}'),
+                  Text('Description: ${products[index].description}'),
+                ],
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Edit Product'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ElevatedButton(
+                              onPressed: _pickImage,
+                              child: Text('Select Image'),
+                            ),
+                            TextField(
+                              controller: priceController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'Price',
+                              ),
+                            ),
+                            TextField(
+                              controller: descriptionController,
+                              decoration: InputDecoration(
+                                labelText: 'Description',
+                              ),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Cancel'),
+                          ),
                           ElevatedButton(
-                            onPressed: _pickImage,
-                            child: Text('Select Image'),
-                          ),
-                          TextField(
-                            controller: priceController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: 'Price',
-                            ),
-                          ),
-                          TextField(
-                            controller: descriptionController,
-                            decoration: InputDecoration(
-                              labelText: 'Description',
-                            ),
+                            onPressed: () {
+                              setState(() {
+                                products[index].imagePath = _image?.path ?? '';
+                                products[index].price =
+                                    double.parse(priceController.text);
+                                products[index].description =
+                                    descriptionController.text;
+                                Navigator.of(context).pop();
+                              });
+                            },
+                            child: Text('Update'),
                           ),
                         ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Cancel'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              products[index].imagePath = _image!;
-                              products[index].price =
-                                  double.parse(priceController.text);
-                              products[index].description =
-                                  descriptionController.text;
-                              Navigator.of(context).pop();
-                            });
-                          },
-                          child: Text('Update'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           );
         },
