@@ -42,7 +42,12 @@ class _forgotpasswordState extends State<forgotpassword> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 200.0),
+                      const SizedBox(height: 100.0),
+                      Image.asset(
+                        'assets/images/logo.png', // Replace with your image path
+                        width: 200,
+                        height: 200,
+                      ),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Email',

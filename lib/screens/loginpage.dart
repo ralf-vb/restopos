@@ -42,7 +42,7 @@ class _loginpageState extends State<loginpage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/projectlogo.png', // Replace with your image path
+                    'assets/images/logo.png', // Replace with your image path
                     width: 200,
                     height: 200,
                   ),

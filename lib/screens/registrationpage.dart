@@ -40,7 +40,7 @@ class _registrationpageState extends State<registrationpage> {
                   children: [
                     const SizedBox(height: 100.0),
                     Image.asset(
-                      'assets/images/projectlogo.png', // Replace with your image path
+                      'assets/images/logo.png', // Replace with your image path
                       width: 200,
                       height: 200,
                     ),
