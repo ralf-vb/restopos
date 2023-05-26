@@ -12,13 +12,22 @@ class managerdashboard extends StatefulWidget {
 }
 
 class _managerdashboardState extends State<managerdashboard> {
+  String _appBarTitle = 'Manager Dashboard';
   Widget _currentPage = Center(child: Text('Manager Dashboard Content'));
+
+  void _changePage(String title, Widget page) {
+    setState(() {
+      _appBarTitle = title;
+      _currentPage = page;
+    });
+    Navigator.pop(context); // Close the drawer
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Manager'),
+        title: Text(_appBarTitle),
       ),
       drawer: Drawer(
         child: ListView(
@@ -40,48 +49,23 @@ class _managerdashboardState extends State<managerdashboard> {
             ),
             ListTile(
               title: Text('Pos'),
-              onTap: () {
-                setState(() {
-                  _currentPage = m_pospage();
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('POS', m_pospage()),
             ),
             ListTile(
               title: Text('Inventory'),
-              onTap: () {
-                setState(() {
-                  _currentPage = m_inventorypage();
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('Inventory', m_inventorypage()),
             ),
             ListTile(
               title: Text('Audit Logs'),
-              onTap: () {
-                setState(() {
-                  _currentPage = m_auditlogspage();
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('Audit Logs', m_auditlogspage()),
             ),
             ListTile(
               title: Text('View Reports'),
-              onTap: () {
-                setState(() {
-                  _currentPage = m_viewreportspage();
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('View Reports', m_viewreportspage()),
             ),
             ListTile(
               title: Text('Home'),
-              onTap: () {
-                setState(() {
-                  _currentPage = Center(child: Text('Manager Dashboard Content'));
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('Manager Dashboard', Center(child: Text('Manager Dashboard Content'))),
             ),
           ],
         ),

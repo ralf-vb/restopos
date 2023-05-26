@@ -26,16 +26,19 @@ class _InventorypageState extends State<Inventorypage> {
     return Scaffold(
       backgroundColor: Colors.red[100],
 
-      body: ListView.builder(
-        itemCount: inventoryItems.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = inventoryItems[index];
-
-          return ListTile(
-            title: Text(item.name),
-            subtitle: Text('Quantity: ${item.quantity}'),
+      body: DataTable(
+        columns: const [
+          DataColumn(label: Text('Name')),
+          DataColumn(label: Text('Quantity')),
+        ],
+        rows: inventoryItems.map((item) {
+          return DataRow(
+            cells: [
+              DataCell(Text(item.name)),
+              DataCell(Text(item.quantity.toString())),
+            ],
           );
-        },
+        }).toList(),
       ),
     );
   }

@@ -12,13 +12,22 @@ class cashierdashboard extends StatefulWidget {
 }
 
 class _cashierdashboardState extends State<cashierdashboard> {
+  String _appBarTitle = 'Cashier Dashboard';
   Widget _currentPage = Center(child: Text('Cashier Dashboard Content'));
+
+  void _changePage(String title, Widget page) {
+    setState(() {
+      _appBarTitle = title;
+      _currentPage = page;
+    });
+    Navigator.pop(context); // Close the drawer
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cashier'),
+        title: Text(_appBarTitle),
       ),
       drawer: Drawer(
         child: ListView(
@@ -39,40 +48,20 @@ class _cashierdashboardState extends State<cashierdashboard> {
               ),
             ),
             ListTile(
-              title: Text('Pos'),
-              onTap: () {
-                setState(() {
-                  _currentPage = c_pospage();
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              title: Text('POS'),
+              onTap: () => _changePage('POS', c_pospage()),
             ),
             ListTile(
               title: Text('Inventory'),
-              onTap: () {
-                setState(() {
-                  _currentPage = c_inventorypage();
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('Inventory', c_inventorypage()),
             ),
             ListTile(
               title: Text('Payroll'),
-              onTap: () {
-                setState(() {
-                  _currentPage = c_payrollpage();
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('Payroll', c_payrollpage()),
             ),
             ListTile(
               title: Text('Home'),
-              onTap: () {
-                setState(() {
-                  _currentPage = Center(child: Text('Cashier Dashboard Content'));
-                });
-                Navigator.pop(context); // Close the drawer
-              },
+              onTap: () => _changePage('Cashier Dashboard', Center(child: Text('Cashier Dashboard Content'))),
             ),
           ],
         ),

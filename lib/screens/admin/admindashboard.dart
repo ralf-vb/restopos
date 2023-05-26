@@ -14,13 +14,12 @@ class admindashboard extends StatefulWidget {
 
 class _admindashboardState extends State<admindashboard> {
   Widget _currentPage = Center(child: Text('Admin Dashboard Content'));
+  PreferredSizeWidget? _currentAppBar = AppBar(title: const Text('Admin'));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin'),
-      ),
+      appBar: _currentAppBar,
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -44,6 +43,7 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = pospage();
+                  _currentAppBar = AppBar(title: const Text('POS'));
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -53,6 +53,7 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = Inventorypage();
+                  _currentAppBar = AppBar(title: const Text('Inventory'));
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -62,6 +63,7 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = usermanagementpage();
+                  _currentAppBar = AppBar(title: const Text('User Management'));
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -71,6 +73,7 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = Auditlogspage();
+                  _currentAppBar = AppBar(title: const Text('Audit Logs'));
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -80,6 +83,7 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = Viewreportspage();
+                  _currentAppBar = AppBar(title: const Text('View Reports'));
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -89,6 +93,7 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = Center(child: Text('Admin Dashboard Content'));
+                  _currentAppBar = AppBar(title: const Text('Admin'));
                 });
                 Navigator.pop(context); // Close the drawer
               },
