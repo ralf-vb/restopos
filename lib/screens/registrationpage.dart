@@ -7,13 +7,18 @@ class registrationpage extends StatefulWidget {
   @override
   _registrationpageState createState() => _registrationpageState();
 }
+
 class _registrationpageState extends State<registrationpage> {
   final _formKey = GlobalKey<FormState>();
 
+  String? _firstName;
+  String? _middleName;
+  String? _lastName;
   String? _username;
   String? _email;
   String? _password;
-  String? _confirmPassword;
+  String? _contactNumber;
+  String? _selectedUserRole;
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +36,65 @@ class _registrationpageState extends State<registrationpage> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 100.0),
+                    const SizedBox(height: 50.0),
                     Image.asset(
                       'assets/images/logo.png', // Replace with your image path
                       width: 200,
-                      height: 200,
+                      height: 100,
                     ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'First Name',
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your first name';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _firstName = value;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Middle Name',
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      validator: (value) {
+                        // You can add additional validation for middle name if needed
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _middleName = value;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Last Name',
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your last name';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _lastName = value;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Username',
@@ -100,22 +151,51 @@ class _registrationpageState extends State<registrationpage> {
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(
-                      obscureText: true,
                       decoration: InputDecoration(
-                        labelText: 'Confirm Password',
-                        prefixIcon: Icon(Icons.lock),
+                        labelText: 'Contact Number',
+                        prefixIcon: Icon(Icons.phone),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please confirm your password';
-                        }
-                        if (_password != null && value != _password) {
-                          return 'Passwords do not match';
+                          return 'Please enter your contact number';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        _confirmPassword = value;
+                        _contactNumber = value;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'User Role',
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      value: _selectedUserRole,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedUserRole = newValue;
+                        });
+                      },
+                      items: [
+                        DropdownMenuItem(
+                          value: 'Admin',
+                          child: Text('Admin'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Manager',
+                          child: Text('Manager'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Cashier',
+                          child: Text('Cashier'),
+                        ),
+                      ],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a user role';
+                        }
+                        return null;
                       },
                     ),
                     const SizedBox(height: 16.0),
@@ -123,31 +203,11 @@ class _registrationpageState extends State<registrationpage> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          if (_password != _confirmPassword) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Error'),
-                                  content: Text('Passwords do not match'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else {
-                            // Perform registration logic here using _username, _email, _password, _confirmPassword
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => loginpage()),
-                            );
-                          }
+                          // Perform registration logic here using _firstName, _middleName, _lastName, _username, _email, _password, _contactNumber, and _selectedUserRole
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => loginpage()),
+                          );
                         }
                       },
                       child: const Text('Register'),
@@ -175,7 +235,6 @@ class _registrationpageState extends State<registrationpage> {
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
