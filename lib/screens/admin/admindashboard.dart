@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restopos/screens/admin/Auditlogspage.dart';
 import 'package:restopos/screens/admin/usermanagementpage.dart';
-import 'package:restopos/screens/admin/Inventorypage.dart';
 import 'package:restopos/screens/admin/Viewreportspage.dart';
 import 'package:restopos/screens/admin/pospage.dart';
 
@@ -48,16 +47,7 @@ class _admindashboardState extends State<admindashboard> {
                 Navigator.pop(context); // Close the drawer
               },
             ),
-            ListTile(
-              title: Text('Inventory'),
-              onTap: () {
-                setState(() {
-                  _currentPage = Inventorypage();
-                  _currentAppBar = AppBar(title: const Text('Inventory'));
-                });
-                Navigator.pop(context); // Close the drawer
-              },
-            ),
+
             ListTile(
               title: Text('User Management'),
               onTap: () {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restopos/screens/cashier/c_inventorypage.dart';
 import 'package:restopos/screens/cashier/c_payrollpage.dart';
 import 'package:restopos/screens/cashier/c_pospage.dart';
 
@@ -51,10 +50,7 @@ class _cashierdashboardState extends State<cashierdashboard> {
               title: Text('POS'),
               onTap: () => _changePage('POS', c_pospage()),
             ),
-            ListTile(
-              title: Text('Inventory'),
-              onTap: () => _changePage('Inventory', c_inventorypage()),
-            ),
+
             ListTile(
               title: Text('Payroll'),
               onTap: () => _changePage('Payroll', c_payrollpage()),

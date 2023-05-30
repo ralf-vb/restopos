@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:restopos/screens/manager/m_auditlogspage.dart';
-import 'package:restopos/screens/manager/m_inventorypage.dart';
 import 'package:restopos/screens/manager/m_pospage.dart';
 import 'package:restopos/screens/manager/m_viewreportspage.dart';
 
@@ -51,10 +50,7 @@ class _managerdashboardState extends State<managerdashboard> {
               title: Text('Pos'),
               onTap: () => _changePage('POS', m_pospage()),
             ),
-            ListTile(
-              title: Text('Inventory'),
-              onTap: () => _changePage('Inventory', m_inventorypage()),
-            ),
+
             ListTile(
               title: Text('Audit Logs'),
               onTap: () => _changePage('Audit Logs', m_auditlogspage()),
