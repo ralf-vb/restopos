@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:restopos/screens/admin/admindashboard.dart';
 import 'package:restopos/screens/cashier/cashierdashboard.dart';
 import 'package:restopos/screens/manager/managerdashboard.dart';
 import 'package:restopos/screens/registrationpage.dart';
 import 'package:restopos/screens/forgotpassword.dart';
-
 
 class loginpage extends StatefulWidget {
   const loginpage({Key? key}) : super(key: key);
@@ -18,173 +15,172 @@ class loginpage extends StatefulWidget {
 class _loginpageState extends State<loginpage> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  String? _email;
+  String? _password;
   bool _isPasswordVisible = false;
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _login() async {
-    if (_formKey.currentState!.validate()) {
-      final url = Uri.parse('http://localhost:3000/login');
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'username': _emailController.text,
-          'password': _passwordController.text,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        if (data['user'] != null) {
-          final user = data['user'];
-          if (user['username'] == 'superadmin@gmail.com') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => admindashboard()),
-            );
-          } else {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text('Invalid User Type'),
-                  content: Text('Invalid user type encountered.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        } else {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Invalid Credentials'),
-                content: Text('Please enter valid credentials.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Login Failed'),
-              content: Text('Failed to log in. Please try again.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  suffixIcon: IconButton(
-                    icon: Icon(_isPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
+      backgroundColor: Colors.white, // Set your desired background color here
+      body: FractionallySizedBox(
+        alignment: Alignment.center,
+        widthFactor: 1.0,
+        heightFactor: 1.0,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/pbackground2.jpeg'), // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png', // Replace with your image path
+                    width: 200,
+                    height: 200,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(Icons.email),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _email = value;
                     },
                   ),
-                ),
-                obscureText: !_isPasswordVisible,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _login,
-                child: Text('Login'),
-              ),
-              SizedBox(height: 16.0),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => registrationpage(),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                        child: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+                      ),
                     ),
-                  );
-                },
-                child: Text("Don't have an account? Sign up"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => forgotpassword(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _password = value;
+                    },
+                  ),
+                  const SizedBox(height: 16.00),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        // Perform login logic here using _email and _password
+                        if (_email == 'superadmin@gmail.com' && _password == 'superadmin') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => admindashboard()),
+                          );
+                        } else if (_email == 'manager@gmail.com' && _password == 'manager') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => managerdashboard()),
+                          );
+                        } else if (_email == 'cashier@gmail.com' && _password == 'cashier') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => cashierdashboard()),
+                          );
+                        } else {
+                          // Handle invalid credentials
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+
+
+                                title: Text('Invalid Credentials'),
+                                content: Text('Please enter valid credentials.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blue[300]!), // Change the color here
+                      minimumSize: MaterialStateProperty.all<Size>(Size(250, 50)), // Adjust the width and height as needed
                     ),
-                  );
-                },
-                child: Text('Forgot Password?'),
+                    child: const Text('Login'),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Dont Have Account?',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => registrationpage()),
+                          );
+                        },
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // Change the color here
+                        ),
+                        child: const Text('Register >'),
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // Navigation logic here
+                      // For example, you can use Navigator.push to go to another page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => forgotpassword()),
+                      );
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        color: Colors.red[200],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
