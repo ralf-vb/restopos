@@ -15,9 +15,16 @@ class loginpage extends StatefulWidget {
 class _loginpageState extends State<loginpage> {
   final _formKey = GlobalKey<FormState>();
 
-  String? _email;
-  String? _password;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,7 @@ class _loginpageState extends State<loginpage> {
                     height: 200,
                   ),
                   TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email),
@@ -57,12 +65,10 @@ class _loginpageState extends State<loginpage> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      _email = value;
-                    },
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: _passwordController,
                     obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
@@ -82,27 +88,23 @@ class _loginpageState extends State<loginpage> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      _password = value;
-                    },
                   ),
                   const SizedBox(height: 16.00),
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        // Perform login logic here using _email and _password
-                        if (_email == 'superadmin@gmail.com' && _password == 'superadmin') {
+                        // Perform login logic here using _emailController.text and _passwordController.text
+                        if (_emailController.text == 'superadmin@gmail.com' && _passwordController.text == 'superadmin') {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => admindashboard()),
                           );
-                        } else if (_email == 'manager@gmail.com' && _password == 'manager') {
+                        } else if (_emailController.text == 'manager@gmail.com' && _passwordController.text == 'manager') {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => managerdashboard()),
                           );
-                        } else if (_email == 'cashier@gmail.com' && _password == 'cashier') {
+                        } else if (_emailController.text == 'cashier@gmail.com' && _passwordController.text == 'cashier') {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => cashierdashboard()),
@@ -113,8 +115,6 @@ class _loginpageState extends State<loginpage> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-
-
                                 title: Text('Invalid Credentials'),
                                 content: Text('Please enter valid credentials.'),
                                 actions: [
