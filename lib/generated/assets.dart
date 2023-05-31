@@ -6,17 +6,27 @@ class Assets {
   static const String imagesAppetizer1 = 'assets/images/appetizer1.jpeg';
   static const String imagesAppetizer2 = 'assets/images/appetizer2.jpeg';
   static const String imagesAppetizer3 = 'assets/images/appetizer3.jpeg';
+  static const String imagesAppetizer4 = 'assets/images/appetizer4.jpg';
+  static const String imagesAppetizer5 = 'assets/images/appetizer5.jpg';
   static const String imagesDesert1 = 'assets/images/desert1.jpeg';
   static const String imagesDesert2 = 'assets/images/desert2.jpeg';
   static const String imagesDesert3 = 'assets/images/desert3.jpeg';
   static const String imagesDessert = 'assets/images/dessert.jpg';
+  static const String imagesDessert4 = 'assets/images/dessert4.jpg';
+  static const String imagesDessert5 = 'assets/images/dessert5.jpg';
   static const String imagesDrinks1 = 'assets/images/drinks1.jpeg';
   static const String imagesDrinks2 = 'assets/images/drinks2.jpeg';
   static const String imagesDrinks3 = 'assets/images/drinks3.jpeg';
+  static const String imagesDrinks4 = 'assets/images/drinks4.jpg';
+  static const String imagesDrinks5 = 'assets/images/drinks5.jpg';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesMaincourse1 = 'assets/images/maincourse1.jpeg';
   static const String imagesMaincourse2 = 'assets/images/maincourse2.jpeg';
   static const String imagesMaincourse3 = 'assets/images/maincourse3.jpg';
+  static const String imagesMaincourse4 = 'assets/images/maincourse4.jpeg';
+  static const String imagesMaincourse5 = 'assets/images/maincourse5.jpeg';
   static const String imagesPbackground2 = 'assets/images/pbackground2.jpeg';
+  static const String imagesPbackground3 = 'assets/images/pbackground3.jpeg';
+  static const String imagesPbackground4 = 'assets/images/pbackground4.jpeg';
 
 }

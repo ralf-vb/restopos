@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restopos/screens/admin/Auditlogspage.dart';
+import 'package:restopos/screens/admin/cartpage.dart';
 import 'package:restopos/screens/admin/usermanagementpage.dart';
 import 'package:restopos/screens/admin/Viewreportspage.dart';
 import 'package:restopos/screens/admin/pospage.dart';
@@ -13,7 +14,10 @@ class admindashboard extends StatefulWidget {
 
 class _admindashboardState extends State<admindashboard> {
   Widget _currentPage = Center(child: Text('Admin Dashboard Content'));
-  PreferredSizeWidget? _currentAppBar = AppBar(title: const Text('Admin'));
+  PreferredSizeWidget? _currentAppBar = AppBar(
+    title: const Text('Homepage'),
+    backgroundColor: Colors.blue, // Set the background color of the AppBar
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class _admindashboardState extends State<admindashboard> {
               ),
               child: Center(
                 child: Text(
-                  'Admin Menu',
+                  'Main Menu',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -42,18 +46,23 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = pospage();
-                  _currentAppBar = AppBar(title: const Text('POS'));
+                  _currentAppBar = AppBar(
+                    title: const Text('POS',style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors.blue[100], // Set the background color of the AppBar
+                  );
                 });
                 Navigator.pop(context); // Close the drawer
               },
             ),
-
             ListTile(
-              title: Text('User Management'),
+              title: Text('Cart'),
               onTap: () {
                 setState(() {
-                  _currentPage = usermanagementpage();
-                  _currentAppBar = AppBar(title: const Text('User Management'));
+                  _currentPage = cartpage();
+                  _currentAppBar = AppBar(
+                    title: const Text('Cart',style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors.red[100], // Set the background color of the AppBar
+                  );
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -63,7 +72,10 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = Auditlogspage();
-                  _currentAppBar = AppBar(title: const Text('Audit Logs'));
+                  _currentAppBar = AppBar(
+                    title: const Text('Audit Logs',style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors.yellow[300], // Set the background color of the AppBar
+                  );
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -73,7 +85,10 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = Viewreportspage();
-                  _currentAppBar = AppBar(title: const Text('View Reports'));
+                  _currentAppBar = AppBar(
+                    title: const Text('View Reports',style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors.orange[100], // Set the background color of the AppBar
+                  );
                 });
                 Navigator.pop(context); // Close the drawer
               },
@@ -83,7 +98,10 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 setState(() {
                   _currentPage = Center(child: Text('Admin Dashboard Content'));
-                  _currentAppBar = AppBar(title: const Text('Admin'));
+                  _currentAppBar = AppBar(
+                    title: const Text('Homepage'),
+                    backgroundColor: Colors.blue, // Set the background color of the AppBar
+                  );
                 });
                 Navigator.pop(context); // Close the drawer
               },

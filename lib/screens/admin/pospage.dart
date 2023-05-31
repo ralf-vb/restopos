@@ -10,81 +10,119 @@ class pospage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/pbackground2.jpeg'),
+            image: AssetImage('assets/images/pbackground4.jpeg'),
             fit: BoxFit.cover,
           ),
         ),
         child: PageView.builder(
           controller: _pageController,
-          itemCount: 5,
+          itemCount: 4,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return buildPage('Dessert', [
-                'assets/images/desert1.jpeg',
-                'assets/images/desert2.jpeg',
-                'assets/images/desert3.jpeg',
-                'assets/images/dessert4.jpg',
-                'assets/images/dessert5.jpg',
+              return buildPage(context, 'Dessert', [
+                {'imagePath': 'assets/images/desert1.jpeg', 'price': '\$5.99'},
+                {'imagePath': 'assets/images/desert2.jpeg', 'price': '\$7.99'},
+                {'imagePath': 'assets/images/desert3.jpeg', 'price': '\$4.99'},
+                {'imagePath': 'assets/images/dessert4.jpg', 'price': '\$9.99'},
+                {'imagePath': 'assets/images/dessert5.jpg', 'price': '\$6.99'},
               ]);
             } else if (index == 1) {
-              return buildPage('Appetizer', [
-                'assets/images/appetizer1.jpeg',
-                'assets/images/appetizer2.jpeg',
-                'assets/images/appetizer3.jpeg',
-                'assets/images/appetizer4.jpg',
-                'assets/images/appetizer5.jpg',
+              return buildPage(context, 'Appetizer', [
+                {'imagePath': 'assets/images/appetizer1.jpeg', 'price': '\$8.99'},
+                {'imagePath': 'assets/images/appetizer2.jpeg', 'price': '\$6.99'},
+                {'imagePath': 'assets/images/appetizer3.jpeg', 'price': '\$7.99'},
+                {'imagePath': 'assets/images/appetizer4.jpg', 'price': '\$5.99'},
+                {'imagePath': 'assets/images/appetizer5.jpg', 'price': '\$9.99'},
               ]);
             } else if (index == 2) {
-              return buildPage('Main Course', [
-                'assets/images/maincourse1.jpeg',
-                'assets/images/maincourse2.jpeg',
-                'assets/images/maincourse3.jpg',
-                'assets/images/maincourse4.jpeg',
-                'assets/images/maincourse5.jpeg',
+              return buildPage(context, 'Main Course', [
+                {'imagePath': 'assets/images/maincourse1.jpeg', 'price': '\$12.99'},
+                {'imagePath': 'assets/images/maincourse2.jpeg', 'price': '\$10.99'},
+                {'imagePath': 'assets/images/maincourse3.jpg', 'price': '\$11.99'},
+                {'imagePath': 'assets/images/maincourse4.jpeg', 'price': '\$9.99'},
+                {'imagePath': 'assets/images/maincourse5.jpeg', 'price': '\$13.99'},
               ]);
             } else if (index == 3) {
-              return buildPage('Drinks', [
-                'assets/images/drinks1.jpeg',
-                'assets/images/drinks2.jpeg',
-                'assets/images/drinks3.jpeg',
-                'assets/images/drinks4.jpg',
-                'assets/images/drinks5.jpg',
+              return buildPage(context, 'Drinks', [
+                {'imagePath': 'assets/images/drinks1.jpeg', 'price': '\$2.99'},
+                {'imagePath': 'assets/images/drinks2.jpeg', 'price': '\$3.99'},
+                {'imagePath': 'assets/images/drinks3.jpeg', 'price': '\$4.99'},
+                {'imagePath': 'assets/images/drinks4.jpg', 'price': '\$2.99'},
+                {'imagePath': 'assets/images/drinks5.jpg', 'price': '\$3.99'},
               ]);
             }
+            return Container(); // Return an empty container for other indexes
           },
         ),
       ),
     );
   }
 
-  Widget buildPage(String title, List<String> imagePaths) {
+  Widget buildPage(BuildContext context, String title, List<Map<String, String>> images) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            title,
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        SizedBox(height: MediaQuery.of(context).size.height / 6), // Set the height to 1/4 of the screen height
         Expanded(
-          child: ListView.builder(
-            itemCount: imagePaths.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                child: Image.asset(
-                  imagePaths[index],
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white, // Change the background color of the container
+              border: Border.all(
+                color: Colors.white, // Set the border color
+                width: 2.0, // Set the border width
+              ),
+              borderRadius: BorderRadius.circular(20.0), // Set the border radius
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              );
-            },
+                Expanded(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                    ),
+                    itemCount: images.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.asset(
+                                images[index]['imagePath']!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              images[index]['price']!,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
