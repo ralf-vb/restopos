@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-class pospage extends StatelessWidget {
+class pospage extends StatefulWidget {
+  @override
+  _pospageState createState() => _pospageState();
+}
+
+class _pospageState extends State<pospage> {
   final PageController _pageController = PageController(initialPage: 0);
+  List<Map<String, String>> cartItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +165,17 @@ class pospage extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CartPage(cartItems: cartItems),
+            ),
+          );
+        },
+        child: Icon(Icons.shopping_cart),
+      ),
     );
   }
 
@@ -200,6 +217,9 @@ class pospage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final item = images[index];
                       return GestureDetector(
+                        onTap: () {
+                          addToCart(item);
+                        },
                         onDoubleTap: () {
                           showImageDetails(context, item);
                         },
@@ -249,6 +269,13 @@ class pospage extends StatelessWidget {
     );
   }
 
+  void addToCart(Map<String, String> item) {
+    // Add the item to the cart
+    setState(() {
+      cartItems.add(item);
+    });
+  }
+
   void showImageDetails(BuildContext context, Map<String, String> item) {
     // Show the details of the item
     showDialog(
@@ -278,6 +305,131 @@ class pospage extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class CartPage extends StatefulWidget {
+  final List<Map<String, dynamic>> cartItems;
+
+  CartPage({required this.cartItems});
+
+  @override
+  _CartPageState createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  List<int> quantities = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the quantities list with the initial quantities of each item
+    quantities = List<int>.filled(widget.cartItems.length, 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Cart'),
+      ),
+      body: ListView.builder(
+        itemCount: widget.cartItems.length,
+        itemBuilder: (context, index) {
+          final item = widget.cartItems[index];
+          final quantity = quantities[index];
+          final price = item['price'] * quantity; // Multiply price with quantity
+          return ListTile(
+            leading: Image.asset(
+              item['imagePath']!,
+              fit: BoxFit.cover,
+            ),
+            title: Text(price.toString()),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(item['description'].toString()),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        decreaseQuantity(index);
+                      },
+                      icon: Icon(Icons.remove_circle),
+                    ),
+                    Text('$quantity'),
+                    IconButton(
+                      onPressed: () {
+                        increaseQuantity(index);
+                      },
+                      icon: Icon(Icons.add_circle),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showRemoveConfirmationDialog(item['id']);
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void decreaseQuantity(int index) {
+    setState(() {
+      if (quantities[index] > 1) {
+        quantities[index]--;
+      }
+    });
+  }
+
+  void increaseQuantity(int index) {
+    setState(() {
+      quantities[index]++;
+    });
+  }
+
+  void removeItem(int itemId) {
+    setState(() {
+      final itemIndex = widget.cartItems.indexWhere((item) => item['id'] == itemId);
+      if (itemIndex != -1) {
+        quantities.removeAt(itemIndex);
+        widget.cartItems.removeAt(itemIndex);
+      }
+    });
+  }
+
+  void showRemoveConfirmationDialog(int itemId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove Item'),
+          content: Text('Are you sure you want to remove this item from the cart?'),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Remove'),
+              onPressed: () {
+                removeItem(itemId);
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
