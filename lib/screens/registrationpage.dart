@@ -20,7 +20,6 @@ class _registrationpageState extends State<registrationpage> {
   String? _email;
   String? _password;
   String? _contactNumber;
-  String? _selectedUserRole;
 
   @override
   Widget build(BuildContext context) {
@@ -167,39 +166,7 @@ class _registrationpageState extends State<registrationpage> {
                         _contactNumber = value;
                       },
                     ),
-                    const SizedBox(height: 16.0),
-                    DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        labelText: 'User Role',
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                      value: _selectedUserRole,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedUserRole = newValue;
-                        });
-                      },
-                      items: [
-                        DropdownMenuItem(
-                          value: 'Admin',
-                          child: Text('Admin'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Manager',
-                          child: Text('Manager'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Cashier',
-                          child: Text('Cashier'),
-                        ),
-                      ],
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a user role';
-                        }
-                        return null;
-                      },
-                    ),
+
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () {
@@ -251,7 +218,7 @@ class _registrationpageState extends State<registrationpage> {
 
   void _registerUser() async {
     // Replace 'http://localhost:8000/register' with your backend API endpoint URL
-    final url = Uri.parse('http://localhost:8000/register');
+    final url = Uri.parse('10.21.0.87:3000/register');
 
     final response = await http.post(
       url,
@@ -264,7 +231,6 @@ class _registrationpageState extends State<registrationpage> {
         "email": _email,
         "password": _password,
         "contactNumber": _contactNumber,
-        "userRole": _selectedUserRole,
       }),
     );
 
