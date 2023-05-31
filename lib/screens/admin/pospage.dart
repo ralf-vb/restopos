@@ -23,26 +23,32 @@ class pospage extends StatelessWidget {
                 'assets/images/desert1.jpeg',
                 'assets/images/desert2.jpeg',
                 'assets/images/desert3.jpeg',
+                'assets/images/dessert4.jpg',
+                'assets/images/dessert5.jpg',
               ]);
             } else if (index == 1) {
               return buildPage('Appetizer', [
                 'assets/images/appetizer1.jpeg',
                 'assets/images/appetizer2.jpeg',
                 'assets/images/appetizer3.jpeg',
+                'assets/images/appetizer4.jpg',
+                'assets/images/appetizer5.jpg',
               ]);
             } else if (index == 2) {
               return buildPage('Main Course', [
                 'assets/images/maincourse1.jpeg',
                 'assets/images/maincourse2.jpeg',
                 'assets/images/maincourse3.jpg',
-
+                'assets/images/maincourse4.jpeg',
+                'assets/images/maincourse5.jpeg',
               ]);
             } else if (index == 3) {
               return buildPage('Drinks', [
                 'assets/images/drinks1.jpeg',
                 'assets/images/drinks2.jpeg',
                 'assets/images/drinks3.jpeg',
-
+                'assets/images/drinks4.jpg',
+                'assets/images/drinks5.jpg',
               ]);
             }
           },
