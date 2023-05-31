@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:restopos/screens/loginpage.dart';
+import 'dart:convert';
 
 class registrationpage extends StatefulWidget {
   const registrationpage({Key? key}) : super(key: key);
@@ -203,11 +205,7 @@ class _registrationpageState extends State<registrationpage> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          // Perform registration logic here using _firstName, _middleName, _lastName, _username, _email, _password, _contactNumber, and _selectedUserRole
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => loginpage()),
-                          );
+                          _registerUser();
                         }
                       },
                       child: const Text('Register'),
@@ -220,15 +218,13 @@ class _registrationpageState extends State<registrationpage> {
                     const SizedBox(height: 16.0),
                     GestureDetector(
                       onTap: () {
-                        // Navigation logic here
-                        // For example, you can use Navigator.push to go to another page
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => loginpage()),
                         );
                       },
                       child: Text(
-                        'Already Have Account?',
+                        'Already Have an Account?',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -251,5 +247,48 @@ class _registrationpageState extends State<registrationpage> {
     // to validate the email format
     // For simplicity, this example checks if the email contains '@' symbol
     return email.contains('@');
+  }
+
+  void _registerUser() async {
+    // Replace 'http://localhost:8000/register' with your backend API endpoint URL
+    final url = Uri.parse('http://localhost:8000/register');
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "firstName": _firstName,
+        "middleName": _middleName,
+        "lastName": _lastName,
+        "username": _username,
+        "email": _email,
+        "password": _password,
+        "contactNumber": _contactNumber,
+        "userRole": _selectedUserRole,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // Registration successful
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => loginpage()),
+      );
+    } else {
+      // Registration failed
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Registration Failed'),
+          content: Text('Unable to register. Please try again.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

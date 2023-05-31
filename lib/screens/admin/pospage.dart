@@ -1,224 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
-class Product {
-  String name;
-  String imagePath;
-  double price;
-  String description;
-
-  Product({
-    required this.name,
-    required this.imagePath,
-    required this.price,
-    required this.description,
-  });
-}
-
-class pospage extends StatefulWidget {
-  const pospage({Key? key}) : super(key: key);
-
-  @override
-  _pospageState createState() => _pospageState();
-}
-
-class _pospageState extends State<pospage> {
-  List<Product> products = [];
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
-  XFile? _image;
-
-  void addProduct() {
-    setState(() {
-      final newProduct = Product(
-        name: nameController.text,
-        imagePath: _image?.path ?? '',
-        price: double.parse(priceController.text),
-        description: descriptionController.text,
-      );
-      products.add(newProduct);
-      // Clear the input fields
-      nameController.clear();
-      priceController.clear();
-      descriptionController.clear();
-      _image = null;
-    });
-  }
-
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile != null ? XFile(pickedFile.path) : null;
-    });
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    priceController.dispose();
-    descriptionController.dispose();
-    super.dispose();
-  }
+class pospage extends StatelessWidget {
+  final PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Dismissible(
-            key: Key(products[index].name), // Unique key for each item
-            onDismissed: (direction) {
-              setState(() {
-                products.removeAt(index);
-              });
-            },
-            background: Container(
-              color: Colors.red,
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.only(right: 20.0),
-            ),
-            child: ListTile(
-              leading: _image != null
-                  ? Image.file(
-                File(_image!.path),
-                width: 50.0,
-                height: 50.0,
-              )
-                  : null,
-              title: Text(products[index].name),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Price: \$${products[index].price.toStringAsFixed(2)}'),
-                  Text('Description: ${products[index].description}'),
-                ],
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Edit Product'),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ElevatedButton(
-                              onPressed: _pickImage,
-                              child: Text('Select Image'),
-                            ),
-                            TextField(
-                              controller: priceController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelText: 'Price',
-                              ),
-                            ),
-                            TextField(
-                              controller: descriptionController,
-                              decoration: InputDecoration(
-                                labelText: 'Description',
-                              ),
-                            ),
-                          ],
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('Cancel'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                products[index].imagePath = _image?.path ?? '';
-                                products[index].price =
-                                    double.parse(priceController.text);
-                                products[index].description =
-                                    descriptionController.text;
-                                Navigator.of(context).pop();
-                              });
-                            },
-                            child: Text('Update'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          );
-        },
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/pbackground2.jpeg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: PageView.builder(
+          controller: _pageController,
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return buildPage('Dessert', [
+                'assets/images/desert1.jpeg',
+                'assets/images/desert2.jpeg',
+                'assets/images/desert3.jpeg',
+              ]);
+            } else if (index == 1) {
+              return buildPage('Appetizer', [
+                'assets/images/appetizer1.jpeg',
+                'assets/images/appetizer2.jpeg',
+                'assets/images/appetizer3.jpeg',
+              ]);
+            } else if (index == 2) {
+              return buildPage('Main Course', [
+                'assets/images/maincourse1.jpeg',
+                'assets/images/maincourse2.jpeg',
+                'assets/images/maincourse3.jpg',
+
+              ]);
+            } else if (index == 3) {
+              return buildPage('Drinks', [
+                'assets/images/drinks1.jpeg',
+                'assets/images/drinks2.jpeg',
+                'assets/images/drinks3.jpeg',
+
+              ]);
+            }
+          },
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Add Product'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _pickImage,
-                      child: Text('Select Image'),
-                    ),
-                    TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        labelText: 'Name',
-                      ),
-                    ),
-                    TextField(
-                      controller: priceController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Price',
-                      ),
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: InputDecoration(
-                        labelText: 'Description',
-                      ),
-                    ),
-                  ],
+    );
+  }
+
+  Widget buildPage(String title, List<String> imagePaths) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: imagePaths.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.all(8.0),
+                child: Image.asset(
+                  imagePaths[index],
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
                 ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Cancel'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      addProduct();
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Add'),
-                  ),
-                ],
               );
             },
-          );
-        },
-        child: Icon(Icons.add),
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
