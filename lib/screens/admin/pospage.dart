@@ -20,35 +20,35 @@ class pospage extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == 0) {
               return buildPage(context, 'Dessert', [
-                {'imagePath': 'assets/images/desert1.jpeg', 'price': '\$5.99'},
-                {'imagePath': 'assets/images/desert2.jpeg', 'price': '\$7.99'},
-                {'imagePath': 'assets/images/desert3.jpeg', 'price': '\$4.99'},
-                {'imagePath': 'assets/images/dessert4.jpg', 'price': '\$9.99'},
-                {'imagePath': 'assets/images/dessert5.jpg', 'price': '\$6.99'},
+                {'imagePath': 'assets/images/desert1.jpeg', 'price': '\₱500.00'},
+                {'imagePath': 'assets/images/desert2.jpeg', 'price': '\₱200.00'},
+                {'imagePath': 'assets/images/desert3.jpeg', 'price': '\₱300.00'},
+                {'imagePath': 'assets/images/dessert4.jpg', 'price': '\₱350.00'},
+                {'imagePath': 'assets/images/dessert5.jpg', 'price': '\₱250.00'},
               ]);
             } else if (index == 1) {
               return buildPage(context, 'Appetizer', [
-                {'imagePath': 'assets/images/appetizer1.jpeg', 'price': '\$8.99'},
-                {'imagePath': 'assets/images/appetizer2.jpeg', 'price': '\$6.99'},
-                {'imagePath': 'assets/images/appetizer3.jpeg', 'price': '\$7.99'},
-                {'imagePath': 'assets/images/appetizer4.jpg', 'price': '\$5.99'},
-                {'imagePath': 'assets/images/appetizer5.jpg', 'price': '\$9.99'},
+                {'imagePath': 'assets/images/appetizer1.jpeg', 'price': '\₱100.00'},
+                {'imagePath': 'assets/images/appetizer2.jpeg', 'price': '\₱50.00'},
+                {'imagePath': 'assets/images/appetizer3.jpeg', 'price': '\₱100.00'},
+                {'imagePath': 'assets/images/appetizer4.jpg', 'price': '\₱150.00'},
+                {'imagePath': 'assets/images/appetizer5.jpg', 'price': '\₱100.00'},
               ]);
             } else if (index == 2) {
               return buildPage(context, 'Main Course', [
-                {'imagePath': 'assets/images/maincourse1.jpeg', 'price': '\$12.99'},
-                {'imagePath': 'assets/images/maincourse2.jpeg', 'price': '\$10.99'},
-                {'imagePath': 'assets/images/maincourse3.jpg', 'price': '\$11.99'},
-                {'imagePath': 'assets/images/maincourse4.jpeg', 'price': '\$9.99'},
-                {'imagePath': 'assets/images/maincourse5.jpeg', 'price': '\$13.99'},
+                {'imagePath': 'assets/images/maincourse1.jpeg', 'price': '\₱100.00'},
+                {'imagePath': 'assets/images/maincourse2.jpeg', 'price': '\₱100.00'},
+                {'imagePath': 'assets/images/maincourse3.jpg', 'price': '\₱100.00'},
+                {'imagePath': 'assets/images/maincourse4.jpeg', 'price': '\₱150.00'},
+                {'imagePath': 'assets/images/maincourse5.jpeg', 'price': '\₱100.00'},
               ]);
             } else if (index == 3) {
               return buildPage(context, 'Drinks', [
-                {'imagePath': 'assets/images/drinks1.jpeg', 'price': '\$2.99'},
-                {'imagePath': 'assets/images/drinks2.jpeg', 'price': '\$3.99'},
-                {'imagePath': 'assets/images/drinks3.jpeg', 'price': '\$4.99'},
-                {'imagePath': 'assets/images/drinks4.jpg', 'price': '\$2.99'},
-                {'imagePath': 'assets/images/drinks5.jpg', 'price': '\$3.99'},
+                {'imagePath': 'assets/images/drinks1.jpeg', 'price': '\₱150.00'},
+                {'imagePath': 'assets/images/drinks2.jpeg', 'price': '\₱100.00'},
+                {'imagePath': 'assets/images/drinks3.jpeg', 'price': '\₱150.00'},
+                {'imagePath': 'assets/images/drinks4.jpg', 'price': '\₱100.00'},
+                {'imagePath': 'assets/images/drinks5.jpg', 'price': '\₱100.00'},
               ]);
             }
             return Container(); // Return an empty container for other indexes
