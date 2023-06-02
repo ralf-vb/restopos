@@ -19,11 +19,14 @@ class Assets {
   static const String imagesDrinks3 = 'assets/images/drinks3.jpeg';
   static const String imagesDrinks4 = 'assets/images/drinks4.jpg';
   static const String imagesDrinks5 = 'assets/images/drinks5.jpg';
+  static const String imagesInstructions = 'assets/images/instructions.png';
+  static const String imagesInstructions2 = 'assets/images/instructions2.png';
+  static const String imagesInstructions3 = 'assets/images/instructions3.png';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesMaincourse1 = 'assets/images/maincourse1.jpeg';
   static const String imagesMaincourse2 = 'assets/images/maincourse2.jpeg';
   static const String imagesMaincourse3 = 'assets/images/maincourse3.jpg';
-  static const String imagesMaincourse4 = 'assets/images/maincourse4.jpeg';
+  static const String imagesMaincourse4 = 'assets/images/maincourse4.jpg';
   static const String imagesMaincourse5 = 'assets/images/maincourse5.jpeg';
   static const String imagesPbackground2 = 'assets/images/pbackground2.jpeg';
   static const String imagesPbackground3 = 'assets/images/pbackground3.jpeg';
