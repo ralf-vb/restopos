@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:restopos/screens/admin/admindashboard.dart';
 import 'package:restopos/screens/cashier/cashierdashboard.dart';
@@ -6,7 +7,9 @@ import 'package:restopos/screens/registrationpage.dart';
 import 'package:restopos/screens/forgotpassword.dart';
 
 class loginpage extends StatefulWidget {
-  const loginpage({Key? key}) : super(key: key);
+  final String userId; // Add the userId parameter
+
+  const loginpage({Key? key, required this.userId}) : super(key: key);
 
   @override
   _loginpageState createState() => _loginpageState();
@@ -95,18 +98,9 @@ class _loginpageState extends State<loginpage> {
                         if (_email == 'superadmin@gmail.com' && _password == 'superadmin') {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => admindashboard()),
+                            MaterialPageRoute(builder: (context) => admindashboard(userId: widget.userId)),
                           );
-                        } else if (_email == 'manager@gmail.com' && _password == 'manager') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => managerdashboard()),
-                          );
-                        } else if (_email == 'cashier@gmail.com' && _password == 'cashier') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => cashierdashboard()),
-                          );
+
                         } else {
                           // Handle invalid credentials
                           showDialog(
@@ -151,7 +145,7 @@ class _loginpageState extends State<loginpage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => registrationpage()),
+                            MaterialPageRoute(builder: (context) => registrationpage(userId: widget.userId,)),
                           );
                         },
                         style: ButtonStyle(
@@ -167,7 +161,7 @@ class _loginpageState extends State<loginpage> {
                       // For example, you can use Navigator.push to go to another page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => forgotpassword()),
+                        MaterialPageRoute(builder: (context) => forgotpassword(userId: widget.userId,)),
                       );
                     },
                     child: Text(

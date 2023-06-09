@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:restopos/screens/loginpage.dart';
 
 class forgotpassword extends StatefulWidget {
-  const forgotpassword({Key? key}) : super(key: key);
+  final String userId; // Add the userId parameter
+
+  const forgotpassword({Key? key, required this.userId}) : super(key: key);
 
   @override
   _forgotpasswordState createState() => _forgotpasswordState();
@@ -74,7 +76,7 @@ class _forgotpasswordState extends State<forgotpassword> {
                             // Perform login logic here using _email and _password
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => loginpage()),
+                              MaterialPageRoute(builder: (context) => loginpage(userId: widget.userId,)),
                             );
                           }
                         },

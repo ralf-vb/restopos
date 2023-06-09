@@ -4,7 +4,9 @@ import 'package:restopos/screens/loginpage.dart';
 import 'dart:convert';
 
 class registrationpage extends StatefulWidget {
-  const registrationpage({Key? key}) : super(key: key);
+  final String userId; // Add the userId parameter
+
+  const registrationpage({Key? key, required this.userId}) : super(key: key);
 
   @override
   _registrationpageState createState() => _registrationpageState();
@@ -19,7 +21,7 @@ class _registrationpageState extends State<registrationpage> {
   String? _username;
   String? _email;
   String? _password;
-  String? _contactNumber;
+  String? _contact;
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +165,7 @@ class _registrationpageState extends State<registrationpage> {
                         return null;
                       },
                       onSaved: (value) {
-                        _contactNumber = value;
+                        _contact = value;
                       },
                     ),
 
@@ -187,7 +189,7 @@ class _registrationpageState extends State<registrationpage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => loginpage()),
+                          MaterialPageRoute(builder: (context) => loginpage(userId: widget.userId)),
                         );
                       },
                       child: Text(
@@ -218,7 +220,7 @@ class _registrationpageState extends State<registrationpage> {
 
   void _registerUser() async {
     // Replace 'http://localhost:8000/register' with your backend API endpoint URL
-    final url = Uri.parse('10.21.0.87:3000/register');
+    final url = Uri.parse('http://10.21.0.87:3000/register');
 
     final response = await http.post(
       url,
@@ -230,7 +232,7 @@ class _registrationpageState extends State<registrationpage> {
         "username": _username,
         "email": _email,
         "password": _password,
-        "contactNumber": _contactNumber,
+        "contact": _contact,
       }),
     );
 
@@ -238,7 +240,7 @@ class _registrationpageState extends State<registrationpage> {
       // Registration successful
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => loginpage()),
+        MaterialPageRoute(builder: (context) => loginpage(userId: widget.userId,)),
       );
     } else {
       // Registration failed

@@ -313,6 +313,7 @@ class _pospageState extends State<pospage> {
   }
 }
 
+
 class CartPage extends StatefulWidget {
   final List<Map<String, dynamic>> cartItems;
 
@@ -324,12 +325,13 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<int> quantities = [];
+  List<bool> isDoubleTapped = [];
 
   @override
   void initState() {
     super.initState();
-    // Initialize the quantities list with the initial quantities of each item
-    quantities = List<int>.filled(widget.cartItems.length, 1);
+    quantities = List<int>.filled(widget.cartItems.length, 1, growable: false);
+    isDoubleTapped = List<bool>.filled(widget.cartItems.length, false, growable: false);
   }
 
   @override
@@ -343,13 +345,14 @@ class _CartPageState extends State<CartPage> {
         itemBuilder: (context, index) {
           final item = widget.cartItems[index];
           final quantity = quantities[index];
-          final price = item['price'] * quantity; // Multiply price with quantity
+          final price = double.parse(item['price'].substring(1)) * quantity;
+
           return ListTile(
             leading: Image.asset(
               item['imagePath']!,
               fit: BoxFit.cover,
             ),
-            title: Text(price.toString()),
+            title: Text(price.toStringAsFixed(2)),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -363,7 +366,17 @@ class _CartPageState extends State<CartPage> {
                       },
                       icon: Icon(Icons.remove_circle),
                     ),
-                    Text('$quantity'),
+                    GestureDetector(
+                      onTap: () {
+                        handleQuantityDoubleTap(index);
+                      },
+                      child: Text(
+                        '$quantity',
+                        style: TextStyle(
+                          color: isDoubleTapped[index] ? Colors.red : Colors.black,
+                        ),
+                      ),
+                    ),
                     IconButton(
                       onPressed: () {
                         increaseQuantity(index);
@@ -377,7 +390,7 @@ class _CartPageState extends State<CartPage> {
             trailing: IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                showRemoveConfirmationDialog(item['id']);
+                removeItem(index);
               },
             ),
           );
@@ -400,40 +413,27 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-  void removeItem(int itemId) {
-    setState(() {
-      final itemIndex = widget.cartItems.indexWhere((item) => item['id'] == itemId);
-      if (itemIndex != -1) {
-        quantities.removeAt(itemIndex);
-        widget.cartItems.removeAt(itemIndex);
-      }
-    });
+  void handleQuantityDoubleTap(int index) {
+    if (isDoubleTapped[index]) {
+      removeItem(index);
+    } else {
+      setState(() {
+        isDoubleTapped[index] = true;
+      });
+
+      Future.delayed(Duration(milliseconds: 300), () {
+        setState(() {
+          isDoubleTapped[index] = false;
+        });
+      });
+    }
   }
 
-  void showRemoveConfirmationDialog(int itemId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Remove Item'),
-          content: Text('Are you sure you want to remove this item from the cart?'),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Remove'),
-              onPressed: () {
-                removeItem(itemId);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  void removeItem(int index) {
+    setState(() {
+      widget.cartItems.removeAt(index);
+      quantities.removeAt(index);
+      isDoubleTapped.removeAt(index);
+    });
   }
 }
