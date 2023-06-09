@@ -326,12 +326,14 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   List<int> quantities = [];
   List<bool> isDoubleTapped = [];
+  List<bool> isChecked = [];
 
   @override
   void initState() {
     super.initState();
     quantities = List<int>.filled(widget.cartItems.length, 1, growable: false);
     isDoubleTapped = List<bool>.filled(widget.cartItems.length, false, growable: false);
+    isChecked = List<bool>.filled(widget.cartItems.length, false, growable: false);
   }
 
   @override
@@ -387,14 +389,18 @@ class _CartPageState extends State<CartPage> {
                 ),
               ],
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                removeItem(index);
+            trailing: Checkbox(
+              value: isChecked[index],
+              onChanged: (value) {
+                toggleCheckBox(index);
               },
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: removeCheckedItems,
+        child: Icon(Icons.delete),
       ),
     );
   }
@@ -429,11 +435,31 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
+  void toggleCheckBox(int index) {
+    setState(() {
+      isChecked[index] = !isChecked[index];
+    });
+  }
+
   void removeItem(int index) {
     setState(() {
       widget.cartItems.removeAt(index);
       quantities.removeAt(index);
       isDoubleTapped.removeAt(index);
+      isChecked.removeAt(index);
+    });
+  }
+
+  void removeCheckedItems() {
+    setState(() {
+      for (int i = widget.cartItems.length - 1; i >= 0; i--) {
+        if (isChecked[i]) {
+          widget.cartItems.removeAt(i);
+          quantities.removeAt(i);
+          isDoubleTapped.removeAt(i);
+          isChecked.removeAt(i);
+        }
+      }
     });
   }
 }
