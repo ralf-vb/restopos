@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:restopos/screens/loginpage.dart';
 
 class forgotpassword extends StatefulWidget {
-  final String userId; // Add the userId parameter
-
-  const forgotpassword({Key? key, required this.userId}) : super(key: key);
+  const forgotpassword({super.key});
 
   @override
-  _forgotpasswordState createState() => _forgotpasswordState();
+  State<forgotpassword> createState() => _forgotpasswordState();
 }
 
 class _forgotpasswordState extends State<forgotpassword> {
@@ -15,11 +13,11 @@ class _forgotpasswordState extends State<forgotpassword> {
 
   String? _email;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100], // Set your desired background color here
+      backgroundColor:
+          Colors.blue[100], // Set your desired background color here
       body: FractionallySizedBox(
         alignment: Alignment.center,
         widthFactor: 1.0,
@@ -27,7 +25,8 @@ class _forgotpasswordState extends State<forgotpassword> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/pbackground2.jpeg'), // Replace with your image path
+              image: AssetImage(
+                  'assets/images/pbackground2.jpeg'), // Replace with your image path
               fit: BoxFit.cover,
             ),
           ),
@@ -76,20 +75,25 @@ class _forgotpasswordState extends State<forgotpassword> {
                             // Perform login logic here using _email and _password
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => loginpage(userId: widget.userId,)),
+                              MaterialPageRoute(
+                                  builder: (context) => loginpage()),
                             );
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(250, 50), // Set the desired button size
-                          backgroundColor: Colors.blue, // Set the desired background color
+                          minimumSize:
+                              Size(250, 50), // Set the desired button size
+                          backgroundColor:
+                              Colors.blue, // Set the desired background color
                         ),
                         child: const Text(
                           'Forgot',
-                          style: TextStyle(fontSize: 16.0, color: Colors.white), // Set the desired text size and color
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors
+                                  .white), // Set the desired text size and color
                         ),
                       ),
-
                     ],
                   ),
                 ),

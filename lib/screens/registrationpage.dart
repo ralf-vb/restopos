@@ -1,15 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:restopos/screens/loginpage.dart';
-import 'dart:convert';
 
 class registrationpage extends StatefulWidget {
-  final String userId; // Add the userId parameter
-
-  const registrationpage({Key? key, required this.userId}) : super(key: key);
+  const registrationpage({super.key});
 
   @override
-  _registrationpageState createState() => _registrationpageState();
+  State<registrationpage> createState() => _registrationpageState();
 }
 
 class _registrationpageState extends State<registrationpage> {
@@ -34,7 +33,8 @@ class _registrationpageState extends State<registrationpage> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/pbackground2.jpeg'), // Replace with your image path
+              image: AssetImage(
+                  'assets/images/pbackground2.jpeg'), // Replace with your image path
               fit: BoxFit.cover,
             ),
           ),
@@ -168,7 +168,6 @@ class _registrationpageState extends State<registrationpage> {
                         _contact = value;
                       },
                     ),
-
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () {
@@ -179,18 +178,22 @@ class _registrationpageState extends State<registrationpage> {
                       },
                       child: const Text('Register'),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue, // Set your desired button color here
-                        minimumSize: Size(250, 50), // Set the minimum size of the button
-                        padding: EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding of the button
+                        primary:
+                            Colors.blue, // Set your desired button color here
+                        minimumSize:
+                            Size(250, 50), // Set the minimum size of the button
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                16.0), // Adjust the padding of the button
                       ),
                     ),
                     const SizedBox(height: 16.0),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => loginpage(userId: widget.userId)),
-                        );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => loginpage()));
                       },
                       child: Text(
                         'Already Have an Account?',
@@ -220,7 +223,7 @@ class _registrationpageState extends State<registrationpage> {
 
   void _registerUser() async {
     // Replace 'http://localhost:8000/register' with your backend API endpoint URL
-    final url = Uri.parse('http://10.21.0.87:3000/register');
+    final url = Uri.parse('http://127.0.0.1:3000/register');
 
     final response = await http.post(
       url,
@@ -239,9 +242,7 @@ class _registrationpageState extends State<registrationpage> {
     if (response.statusCode == 200) {
       // Registration successful
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => loginpage(userId: widget.userId,)),
-      );
+          context, MaterialPageRoute(builder: (context) => loginpage()));
     } else {
       // Registration failed
       showDialog(

@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:restopos/screens/loginpage.dart';
 
 void main() {
-  runApp( MyHomePage(userId: 'userId',));
+  runApp(MyHomePage());
 }
 
 class MyHomePage extends StatefulWidget {
-  final String userId; // Add the userId parameter
-
-  const MyHomePage({Key? key, required this.userId}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -23,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: loginpage(userId: widget.userId,),
+      home: loginpage(),
     );
   }
 }

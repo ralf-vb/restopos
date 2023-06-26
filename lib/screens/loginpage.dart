@@ -1,15 +1,13 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:restopos/screens/admin/admindashboard.dart';
-import 'package:restopos/screens/cashier/cashierdashboard.dart';
-import 'package:restopos/screens/manager/managerdashboard.dart';
-import 'package:restopos/screens/registrationpage.dart';
 import 'package:restopos/screens/forgotpassword.dart';
+import 'package:restopos/screens/registrationpage.dart';
 
 class loginpage extends StatefulWidget {
-  final String userId; // Add the userId parameter
-
-  const loginpage({Key? key, required this.userId}) : super(key: key);
+  const loginpage({Key? key}) : super(key: key);
 
   @override
   _loginpageState createState() => _loginpageState();
@@ -18,14 +16,58 @@ class loginpage extends StatefulWidget {
 class _loginpageState extends State<loginpage> {
   final _formKey = GlobalKey<FormState>();
 
+  TextEditingController _emailController = TextEditingController();
+
+  TextEditingController _passwordController = TextEditingController();
+
   String? _email;
+
   String? _password;
+
   bool _isPasswordVisible = false;
+
+  Future<http.Response> logins(String email, String password) async {
+    try {
+      String url = 'http://127.0.0.1:3000/login';
+
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'email': email, 'password': password}),
+      );
+
+      return response;
+    } catch (e) {
+      print(e);
+
+      throw e;
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Set your desired background color here
+      backgroundColor: Colors.white,
       body: FractionallySizedBox(
         alignment: Alignment.center,
         widthFactor: 1.0,
@@ -33,7 +75,7 @@ class _loginpageState extends State<loginpage> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/pbackground2.jpeg'), // Replace with your image path
+              image: AssetImage('assets/images/pbackground2.jpeg'),
               fit: BoxFit.cover,
             ),
           ),
@@ -45,11 +87,12 @@ class _loginpageState extends State<loginpage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/logo.png', // Replace with your image path
+                    'assets/images/logo.png',
                     width: 200,
                     height: 200,
                   ),
                   TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email),
@@ -58,6 +101,7 @@ class _loginpageState extends State<loginpage> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
                       }
+
                       return null;
                     },
                     onSaved: (value) {
@@ -66,6 +110,7 @@ class _loginpageState extends State<loginpage> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: _passwordController,
                     obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
@@ -76,58 +121,47 @@ class _loginpageState extends State<loginpage> {
                             _isPasswordVisible = !_isPasswordVisible;
                           });
                         },
-                        child: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+                        child: Icon(_isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
                       ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
                       }
+
                       return null;
                     },
                     onSaved: (value) {
                       _password = value;
                     },
                   ),
-                  const SizedBox(height: 16.00),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        // Perform login logic here using _email and _password
-                        if (_email == 'superadmin@gmail.com' && _password == 'superadmin') {
+                        http.Response response = await logins(
+                          _emailController.text,
+                          _passwordController.text,
+                        );
+
+                        if (response.statusCode == 200) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => admindashboard(userId: widget.userId)),
+                            MaterialPageRoute(
+                                builder: (context) => admindashboard()),
                           );
-
                         } else {
-                          // Handle invalid credentials
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-
-
-                                title: Text('Invalid Credentials'),
-                                content: Text('Please enter valid credentials.'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                          _showErrorDialog('Invalid email or password');
                         }
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blue[300]!), // Change the color here
-                      minimumSize: MaterialStateProperty.all<Size>(Size(250, 50)), // Adjust the width and height as needed
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue[300]!),
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(Size(250, 50)),
                     ),
                     child: const Text('Login'),
                   ),
@@ -135,7 +169,7 @@ class _loginpageState extends State<loginpage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Dont Have Account?',
+                        'Don\'t Have an Account?',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -145,11 +179,13 @@ class _loginpageState extends State<loginpage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => registrationpage(userId: widget.userId,)),
+                            MaterialPageRoute(
+                                builder: (context) => registrationpage()),
                           );
                         },
                         style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // Change the color here
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
                         ),
                         child: const Text('Register >'),
                       ),
@@ -157,11 +193,10 @@ class _loginpageState extends State<loginpage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigation logic here
-                      // For example, you can use Navigator.push to go to another page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => forgotpassword(userId: widget.userId,)),
+                        MaterialPageRoute(
+                            builder: (context) => forgotpassword()),
                       );
                     },
                     child: Text(

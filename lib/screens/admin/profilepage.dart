@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class profilepage extends StatefulWidget {
-  final String userId;
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-  profilepage({required this.userId});
+class profilepage extends StatefulWidget {
+  const profilepage({super.key});
 
   @override
-  _profilepageState createState() => _profilepageState();
+  State<profilepage> createState() => _profilepageState();
 }
 
 class _profilepageState extends State<profilepage> {
@@ -22,7 +21,8 @@ class _profilepageState extends State<profilepage> {
 
   Future<void> fetchUserData() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:8080/api/user/${widget.userId}'));
+      final response =
+          await http.get(Uri.parse('http://localhost:8080/api/user/'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as Map<String, dynamic>;
         setState(() {
@@ -39,20 +39,19 @@ class _profilepageState extends State<profilepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: userData.isEmpty
           ? Center(child: CircularProgressIndicator())
           : ListView(
-        padding: EdgeInsets.all(16.0),
-        children: [
-          Text('Username: ${userData['username']}'),
-          Text('First Name: ${userData['first_name']}'),
-          Text('Middle Name: ${userData['middle_name']}'),
-          Text('Last Name: ${userData['last_name']}'),
-          Text('Email: ${userData['email']}'),
-          Text('Contact Number: ${userData['contact_number']}'),
-        ],
-      ),
+              padding: EdgeInsets.all(16.0),
+              children: [
+                Text('Username: ${userData['username']}'),
+                Text('First Name: ${userData['first_name']}'),
+                Text('Middle Name: ${userData['middle_name']}'),
+                Text('Last Name: ${userData['last_name']}'),
+                Text('Email: ${userData['email']}'),
+                Text('Contact Number: ${userData['contact_number']}'),
+              ],
+            ),
     );
   }
 }

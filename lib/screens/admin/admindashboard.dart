@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:restopos/screens/admin/Auditlogspage.dart';
-import 'package:restopos/screens/admin/cartpage.dart';
 import 'package:restopos/screens/admin/Viewreportspage.dart';
 import 'package:restopos/screens/admin/pospage.dart';
 import 'package:restopos/screens/admin/profilepage.dart';
 import 'package:restopos/screens/loginpage.dart';
 
 class admindashboard extends StatefulWidget {
-  final String userId; // Add the userId parameter
-
-  const admindashboard({Key? key, required this.userId}) : super(key: key);
-
+  const admindashboard({super.key});
 
   @override
-  _admindashboardState createState() => _admindashboardState();
+  State<admindashboard> createState() => _admindashboardState();
 }
 
 class _admindashboardState extends State<admindashboard> {
@@ -98,7 +94,6 @@ class _admindashboardState extends State<admindashboard> {
     backgroundColor: Colors.blue, // Set the background color of the AppBar
   );
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,8 +122,10 @@ class _admindashboardState extends State<admindashboard> {
                 setState(() {
                   _currentPage = pospage();
                   _currentAppBar = AppBar(
-                    title: const Text('POS', style: TextStyle(color: Colors.black)),
-                    backgroundColor: Colors.blue[100], // Set the background color of the AppBar
+                    title: const Text('POS',
+                        style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors
+                        .blue[100], // Set the background color of the AppBar
                   );
                 });
                 Navigator.pop(context); // Close the drawer
@@ -153,8 +150,10 @@ class _admindashboardState extends State<admindashboard> {
                 setState(() {
                   _currentPage = Auditlogspage();
                   _currentAppBar = AppBar(
-                    title: const Text('Audit Logs', style: TextStyle(color: Colors.black)),
-                    backgroundColor: Colors.yellow[300], // Set the background color of the AppBar
+                    title: const Text('Audit Logs',
+                        style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors
+                        .yellow[300], // Set the background color of the AppBar
                   );
                 });
                 Navigator.pop(context); // Close the drawer
@@ -166,8 +165,10 @@ class _admindashboardState extends State<admindashboard> {
                 setState(() {
                   _currentPage = Viewreportspage();
                   _currentAppBar = AppBar(
-                    title: const Text('View Reports', style: TextStyle(color: Colors.black)),
-                    backgroundColor: Colors.orange[100], // Set the background color of the AppBar
+                    title: const Text('View Reports',
+                        style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors
+                        .orange[100], // Set the background color of the AppBar
                   );
                 });
                 Navigator.pop(context); // Close the drawer
@@ -177,10 +178,13 @@ class _admindashboardState extends State<admindashboard> {
               title: Text('User Profile'),
               onTap: () {
                 setState(() {
-                  _currentPage = profilepage(userId: widget.userId); // Pass the userId to the profilepage widget
+                  _currentPage =
+                      profilepage(); // Pass the userId to the profilepage widget
                   _currentAppBar = AppBar(
-                    title: const Text('User Profile', style: TextStyle(color: Colors.black)),
-                    backgroundColor: Colors.blue[100], // Set the background color of the AppBar
+                    title: const Text('User Profile',
+                        style: TextStyle(color: Colors.black)),
+                    backgroundColor: Colors
+                        .blue[100], // Set the background color of the AppBar
                   );
                 });
                 Navigator.pop(context); // Close the drawer
@@ -192,12 +196,10 @@ class _admindashboardState extends State<admindashboard> {
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => loginpage(userId: widget.userId)),
+                  MaterialPageRoute(builder: (context) => loginpage()),
                 );
               },
             ),
-
-
           ],
         ),
       ),
